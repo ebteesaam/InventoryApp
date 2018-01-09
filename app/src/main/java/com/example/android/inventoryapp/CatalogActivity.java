@@ -18,18 +18,20 @@ import com.example.android.inventoryapp.data.InventoryContract.Entry;
 
 public class CatalogActivity extends AppCompatActivity {
     private DbHelper mDbHelper;
+
     @Override
     protected void onStart() {
         super.onStart();
-        Cursor cursor=displayDatabaseInfo();
+        Cursor cursor = displayDatabaseInfo();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
 
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab =  findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,20 +40,20 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
-        mDbHelper=new DbHelper(this);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        mDbHelper = new DbHelper(this);
     }
+
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
      * the database.
      */
-    private  Cursor displayDatabaseInfo() {
+    private Cursor displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String[] project={
+        String[] project = {
                 InventoryContract.Entry._ID,
                 Entry.COLUMN_INVENTORY_NAME,
                 Entry.COLUMN_INVENTORY_PRICE,
@@ -61,7 +63,7 @@ public class CatalogActivity extends AppCompatActivity {
                 Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL,
                 Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER
         };
-        Cursor cursor=db.query(Entry.TABLE_NAME,project,null,null,null,null,null);
+        Cursor cursor = db.query(Entry.TABLE_NAME, project, null, null, null, null, null);
 
         //  table in the database).
         TextView displayView = findViewById(R.id.text_view_inventory);
@@ -70,14 +72,14 @@ public class CatalogActivity extends AppCompatActivity {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
 
             displayView.setText("product: " + cursor.getCount());
-            displayView.append(Entry._ID+"  "+
-                    Entry.COLUMN_INVENTORY_NAME+"  "+
-                    Entry.COLUMN_INVENTORY_PRICE+"  "+
-                    Entry.COLUMN_INVENTORY_QUANTITY+"  "+
-                    Entry.COLUMN_INVENTORY_IMAGE+"  "+
-            Entry.COLUMN_INVENTORY_SUPPLIER_NAME+"  "+
-            Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL+"  "+
-            Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
+            displayView.append(Entry._ID + "  " +
+                    Entry.COLUMN_INVENTORY_NAME + "  " +
+                    Entry.COLUMN_INVENTORY_PRICE + "  " +
+                    Entry.COLUMN_INVENTORY_QUANTITY + "  " +
+                    Entry.COLUMN_INVENTORY_IMAGE + "  " +
+                    Entry.COLUMN_INVENTORY_SUPPLIER_NAME + "  " +
+                    Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL + "  " +
+                    Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
 
             // Figure out the index of each column
             int idColumnIndex = cursor.getColumnIndex(Entry._ID);
@@ -106,7 +108,7 @@ public class CatalogActivity extends AppCompatActivity {
                         currentName + " - " +
                         currentprice + " - " +
                         currentquantity + " - " +
-                        currentimage+ " - " +
+                        currentimage + " - " +
                         currentSupplierN + " - " +
                         currentSupplierE + " - " +
                         currentSupplierph));
@@ -116,7 +118,7 @@ public class CatalogActivity extends AppCompatActivity {
             // resources and makes it invalid.
             cursor.close();
         }
-       return cursor;
+        return cursor;
     }
 
     @Override
@@ -126,13 +128,12 @@ public class CatalogActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.catalog_menu, menu);
         return true;
     }
+
     /**
      * Helper method to insert hardcoded pet data into the database. For debugging purposes only.
      */
     private void insertPet() {
         // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create a ContentValues object where column names are the keys,
         //  attributes are the values.
         ContentValues values = new ContentValues();

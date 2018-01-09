@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Layout for the editor -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!-- Layout for the editor -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,23 +15,23 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/category_overview"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_overview" />
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
 
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_inventory_name"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_name"
-                android:inputType="textCapWords"
-                style="@style/EditorFieldStyle" />
+                android:inputType="textCapWords" />
 
         </LinearLayout>
     </LinearLayout>
@@ -48,28 +46,28 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/hint_inventory_price"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/hint_inventory_price" />
 
         <!-- Input fields -->
         <RelativeLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
             android:paddingLeft="4dp">
 
             <!-- price -->
             <EditText
                 android:id="@+id/edit_inventory_price"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_price"
-                android:inputType="numberDecimal"
-                style="@style/EditorFieldStyle" />
+                android:inputType="numberDecimal" />
 
             <!-- Units  -->
             <TextView
                 android:id="@+id/label_weight_units"
-                android:text="@string/unit_inventory_price"
-                style="@style/EditorUnitsStyle"/>
+                style="@style/EditorUnitsStyle"
+                android:text="@string/unit_inventory_price" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -81,23 +79,23 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/hint_inventory_quantity"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/hint_inventory_quantity" />
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
 
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_inventory_quantity"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_name"
-                android:inputType="numberDecimal"
-                style="@style/EditorFieldStyle" />
+                android:inputType="numberDecimal" />
 
         </LinearLayout>
     </LinearLayout>
@@ -110,23 +108,23 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/hint_inventory_image"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/hint_inventory_image" />
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
 
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_inventory_image"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_name"
-                android:inputType="text"
-                style="@style/EditorFieldStyle" />
+                android:inputType="text" />
 
         </LinearLayout>
     </LinearLayout>
@@ -139,35 +137,35 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/hint_inventory_supplier"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/hint_inventory_supplier" />
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
 
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_inventory_supplier_name"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_supplier_name"
-                android:inputType="textCapWords"
-                style="@style/EditorFieldStyle" />
+                android:inputType="textCapWords" />
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_inventory_supplier_email"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_supplier_email"
-                android:inputType="text"
-                style="@style/EditorFieldStyle" />
+                android:inputType="text" />
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_inventory_supplier_phone"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_supplier_phone_number"
-                android:inputType="phone"
-                style="@style/EditorFieldStyle" />
+                android:inputType="phone" />
 
         </LinearLayout>
     </LinearLayout>
