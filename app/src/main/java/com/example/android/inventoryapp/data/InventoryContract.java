@@ -13,36 +13,15 @@ public class InventoryContract {
 
 
     public static final class Entry implements BaseColumns {
-    /** Name of database table for pets */
+    /** Name of database table  */
     public final static String TABLE_NAME = "inventory";
 
-    /**
-     * Unique ID number for the pet (only for use in the database table).
-     *
-     * Type: INTEGER
-     */
     public final static String _ID = BaseColumns._ID;
 
-    /**
-     * Name of the pet.
-     *
-     * Type: TEXT
-     */
     public final static String COLUMN_INVENTORY_NAME ="name";
 
-    /**
-     *
-     *
-     * Type: TEXT
-     */
     public final static String COLUMN_INVENTORY_PRICE = "price";
 
-
-    /**
-     *
-     *
-     * Type: INTEGER
-     */
     public final static String COLUMN_INVENTORY_QUANTITY = "quantity";
     public final static String COLUMN_INVENTORY_IMAGE = "image";
 
