@@ -5,18 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.DbHelper;
-import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
 
 public class EditorActivity extends AppCompatActivity {
@@ -40,7 +34,6 @@ public class EditorActivity extends AppCompatActivity {
         mPriceEditText = (EditText) findViewById(R.id.edit_inventory_price);
         mQuantityEditText = (EditText) findViewById(R.id.edit_inventory_quantity);
         mImageEditText = (EditText) findViewById(R.id.edit_inventory_image);
-
         mSupplierName = (EditText) findViewById(R.id.edit_inventory_supplier_name);
         mSupplierEmail = (EditText) findViewById(R.id.edit_inventory_supplier_email);
         mSupplierNumber = (EditText) findViewById(R.id.edit_inventory_supplier_phone);
@@ -76,7 +69,7 @@ public class EditorActivity extends AppCompatActivity {
        values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, supplierphone);
 
 
-        // Insert a new row for pet in the database, returning the ID of that new row.
+        // Insert a new row in the database, returning the ID of that new row.
         long newRowId = db.insert(Entry.TABLE_NAME, null, values);
 
         if(newRowId==-1){

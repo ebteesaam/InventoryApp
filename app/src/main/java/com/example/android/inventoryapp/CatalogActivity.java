@@ -21,7 +21,7 @@ public class CatalogActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        displayDatabaseInfo();
+        Cursor cursor=displayDatabaseInfo();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,11 @@ public class CatalogActivity extends AppCompatActivity {
     }
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
-     * the pets database.
+     * the database.
      */
-    private void displayDatabaseInfo() {
+    private  Cursor displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
-
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -64,10 +63,8 @@ public class CatalogActivity extends AppCompatActivity {
         };
         Cursor cursor=db.query(Entry.TABLE_NAME,project,null,null,null,null,null);
 
-        // pets table in the database).
-        TextView displayView = findViewById(R.id.text_view_pet);
-        // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
+        //  table in the database).
+        TextView displayView = findViewById(R.id.text_view_inventory);
 
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
@@ -91,7 +88,6 @@ public class CatalogActivity extends AppCompatActivity {
             int suppliernameColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_NAME);
             int supplierEmailColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
             int supplierphoneColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
-
 
             // Iterate through all the returned rows in the cursor
             while (cursor.moveToNext()) {
@@ -120,6 +116,7 @@ public class CatalogActivity extends AppCompatActivity {
             // resources and makes it invalid.
             cursor.close();
         }
+       return cursor;
     }
 
     @Override
@@ -137,7 +134,7 @@ public class CatalogActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
-        // and Toto's pet attributes are the values.
+        //  attributes are the values.
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_INVENTORY_NAME, "CD");
         values.put(Entry.COLUMN_INVENTORY_PRICE, 10);
@@ -146,15 +143,6 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, "Jack");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, "1dfdf@gg");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, 333);
-
-        // Insert a new row for Toto in the database, returning the ID of that new row.
-        // The first argument for db.insert() is the pets table name.
-        // The second argument provides the name of a column in which the framework
-        // can insert NULL in the event that the ContentValues is empty (if
-        // this is set to "null", then the framework will not insert a row when
-        // there are no values).
-        // The third argument is the ContentValues object containing the info for Toto.
-        long newRowId = db.insert(Entry.TABLE_NAME, null, values);
     }
 
     @Override
