@@ -1,29 +1,34 @@
 package com.example.android.inventoryapp;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.inventoryapp.data.DbHelper;
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
+import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private DbHelper mDbHelper;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Cursor cursor = displayDatabaseInfo();
-    }
+    private static final int INVENTORY_LOADER=0;
+    InventoryCursorAdapter inventoryCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,86 +44,25 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // Find the ListView which will be populated with the pet data
+        ListView listView = (ListView) findViewById(R.id.list);
 
-        mDbHelper = new DbHelper(this);
-    }
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
+        inventoryCursorAdapter=new InventoryCursorAdapter(this,null);
+        listView.setAdapter(inventoryCursorAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,l);
 
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the database.
-     */
-    private Cursor displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+                intent.setData(uri);
+                startActivity(intent);
 
-        String[] project = {
-                InventoryContract.Entry._ID,
-                Entry.COLUMN_INVENTORY_NAME,
-                Entry.COLUMN_INVENTORY_PRICE,
-                Entry.COLUMN_INVENTORY_QUANTITY,
-                Entry.COLUMN_INVENTORY_IMAGE,
-                Entry.COLUMN_INVENTORY_SUPPLIER_NAME,
-                Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL,
-                Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER
-        };
-        Cursor cursor = db.query(Entry.TABLE_NAME, project, null, null, null, null, null);
-
-        //  table in the database).
-        TextView displayView = findViewById(R.id.text_view_inventory);
-
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-
-            displayView.setText("product: " + cursor.getCount());
-            displayView.append(Entry._ID + "  " +
-                    Entry.COLUMN_INVENTORY_NAME + "  " +
-                    Entry.COLUMN_INVENTORY_PRICE + "  " +
-                    Entry.COLUMN_INVENTORY_QUANTITY + "  " +
-                    Entry.COLUMN_INVENTORY_IMAGE + "  " +
-                    Entry.COLUMN_INVENTORY_SUPPLIER_NAME + "  " +
-                    Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL + "  " +
-                    Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
-
-            // Figure out the index of each column
-            int idColumnIndex = cursor.getColumnIndex(Entry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_QUANTITY);
-            int imageColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_IMAGE);
-            int suppliernameColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_NAME);
-            int supplierEmailColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
-            int supplierphoneColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
-
-            // Iterate through all the returned rows in the cursor
-            while (cursor.moveToNext()) {
-                // Use that index to extract the String or Int value of the word
-                // at the current row the cursor is on.
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                String currentprice = cursor.getString(priceColumnIndex);
-                int currentquantity = cursor.getInt(quantityColumnIndex);
-                int currentimage = cursor.getInt(imageColumnIndex);
-                String currentSupplierN = cursor.getString(suppliernameColumnIndex);
-                String currentSupplierE = cursor.getString(supplierEmailColumnIndex);
-                long currentSupplierph = cursor.getLong(supplierphoneColumnIndex);
-                // Display the values from each column of the current row in the cursor in the TextView
-                displayView.append(("\n" + currentID + " - " +
-                        currentName + " - " +
-                        currentprice + " - " +
-                        currentquantity + " - " +
-                        currentimage + " - " +
-                        currentSupplierN + " - " +
-                        currentSupplierE + " - " +
-                        currentSupplierph));
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
-        return cursor;
+            }});
+        getLoaderManager().initLoader(INVENTORY_LOADER,null,this);
     }
 
     @Override
@@ -133,6 +77,7 @@ public class CatalogActivity extends AppCompatActivity {
      * Helper method to insert hardcoded pet data into the database. For debugging purposes only.
      */
     private void insertPet() {
+
         // Gets the database in write mode
         // Create a ContentValues object where column names are the keys,
         //  attributes are the values.
@@ -144,6 +89,7 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, "Jack");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, "1dfdf@gg");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, 333);
+        Uri newUri = getContentResolver().insert(Entry.CONTENT_URI, values);
     }
 
     @Override
@@ -153,16 +99,41 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertPet();
-                displayDatabaseInfo();
-
-                // Do nothing for now
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do nothing for now
+                deleteAllPets();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String[] projection = {
+                InventoryContract.Entry._ID,
+                Entry.COLUMN_INVENTORY_NAME,
+                Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER};
+        return new CursorLoader(this,InventoryContract.Entry.CONTENT_URI,projection,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+     inventoryCursorAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        inventoryCursorAdapter.swapCursor(null);
+
+    }
+
+    /**
+     * Helper method to delete all pets in the database.
+     */
+    private void deleteAllPets() {
+        int rowsDeleted = getContentResolver().delete(Entry.CONTENT_URI, null, null);
+        Log.v("CatalogActivity", rowsDeleted + " rows deleted from products database");
     }
 }
 
