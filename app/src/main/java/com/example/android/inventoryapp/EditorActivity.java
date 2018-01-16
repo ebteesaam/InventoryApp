@@ -68,6 +68,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierName.setOnTouchListener(mTouchListener);
         mSupplierEmail.setOnTouchListener(mTouchListener);
         mSupplierNumber.setOnTouchListener(mTouchListener);
+
     }
 
     private void savePet() {
@@ -254,8 +255,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mNameEditText.setText("");
-        mPriceEditText.setText(0);
-        mQuantityEditText.setText(0);
+        mPriceEditText.setText("");
+        mQuantityEditText.setText("");
         mImageEditText.setText("");
         mSupplierName.setText("");
         mSupplierEmail.setText("");
