@@ -48,23 +48,23 @@ public class InventoryCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
+        TextView priceTextView = (TextView) view.findViewById(R.id.price);
+
         TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
 
         // Find the columns of pet attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
-        int phoneColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
+        int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
+        int priceColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
+
 
         // Read the pet attributes from the Cursor for the current pet
         String Name = cursor.getString(nameColumnIndex);
-        String Phone = cursor.getString(phoneColumnIndex);
-        // If the pet breed is empty string or null, then use some default text
-        // that says "Unknown breed", so the TextView isn't blank.
-        if (TextUtils.isEmpty(Phone)) {
-            Phone = context.getString(R.string.unknown_phone);
-        }
-
+        String quantity = cursor.getString(quantityColumnIndex);
+        String price = cursor.getString(priceColumnIndex);
         // Update the TextViews with the attributes for the current pet
         nameTextView.setText(Name);
-        summaryTextView.setText(Phone);//
+        summaryTextView.setText(quantity);
+        priceTextView.setText(price);//
     }
 }
