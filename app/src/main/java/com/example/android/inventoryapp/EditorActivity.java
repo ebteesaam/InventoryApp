@@ -60,13 +60,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
         }
         // Find all relevant views that we will need to read user input from
-        mNameEditText = (EditText) findViewById(R.id.edit_inventory_name);
-        mPriceEditText = (EditText) findViewById(R.id.edit_inventory_price);
+        mNameEditText = findViewById(R.id.edit_inventory_name);
+        mPriceEditText = findViewById(R.id.edit_inventory_price);
         mQuantityEditText = findViewById(R.id.edit_inventory_quantity);
-        mImageEditText = (EditText) findViewById(R.id.edit_inventory_image);
-        mSupplierName = (EditText) findViewById(R.id.edit_inventory_supplier_name);
-        mSupplierEmail = (EditText) findViewById(R.id.edit_inventory_supplier_email);
-        mSupplierNumber = (EditText) findViewById(R.id.edit_inventory_supplier_phone);
+        mImageEditText = findViewById(R.id.edit_inventory_image);
+        mSupplierName = findViewById(R.id.edit_inventory_supplier_name);
+        mSupplierEmail = findViewById(R.id.edit_inventory_supplier_email);
+        mSupplierNumber = findViewById(R.id.edit_inventory_supplier_phone);
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
@@ -79,7 +79,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 String phone = mSupplierNumber.getText().toString().trim();
-                ;
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
                 startActivity(intent);
             }
@@ -88,14 +87,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         increament.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                increament(view);
+                increament(mQuantityEditText);
             }
         });
         decreament = findViewById(R.id.decreament);
         decreament.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                decreament(view);
+                decreament(mQuantityEditText);
             }
         });
 
@@ -172,12 +171,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     public void increament(View view) {
-
+        quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         quantity = quantity + 1;
         display(quantity);
     }
 
     public void decreament(View view) {
+
+        quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         if (quantity > 0) {
             quantity = quantity - 1;
             display(quantity);
@@ -187,8 +188,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void display(int number) {
-        TextView quantityTextView = (TextView) findViewById(R.id.edit_inventory_quantity);
-        quantityTextView.setText("" + number);
+        mQuantityEditText.setText("" + number);
     }
 
     @Override

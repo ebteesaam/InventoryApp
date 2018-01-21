@@ -50,7 +50,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
         // Find the ListView which will be populated with the pet data
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
@@ -95,7 +95,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, "Jack");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, "1dfdf@gg");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, 333);
-        Uri newUri = getContentResolver().insert(Entry.CONTENT_URI, values);
+        getContentResolver().insert(Entry.CONTENT_URI, values);
     }
 
     @Override
