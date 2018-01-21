@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.inventoryapp.CatalogActivity;
 import com.example.android.inventoryapp.R;
 
 

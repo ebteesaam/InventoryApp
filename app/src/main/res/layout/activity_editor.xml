@@ -196,6 +196,14 @@
             android:paddingTop="16dp"
             android:text="call supplier" />
 
+        <Button
+            android:id="@+id/view"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="view product" />
+
     </LinearLayout>
 
 </LinearLayout>

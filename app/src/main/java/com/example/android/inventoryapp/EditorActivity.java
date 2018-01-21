@@ -30,8 +30,15 @@ import com.example.android.inventoryapp.data.InventoryContract.Entry;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int EXISTING_PET_LOADER = 0;
-    private Uri mCurrentInventoryUri;
-    private EditText mNameEditText;
+    public static Uri mCurrentInventoryUri;
+    public static EditText mNameEditText;
+    public static String nameString;
+    public static int price;
+    public static int quantityl;
+    public static String image;
+    public static String suppliername;
+    public static String supplierEmail;
+    public static String supplierphone;
     private EditText mPriceEditText;
     private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
     private TextView mQuantityEditText;
@@ -80,6 +87,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 String phone = mSupplierNumber.getText().toString().trim();
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
+            }
+        });
+        Button view = findViewById(R.id.view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditorActivity.this, SeeDetails.class);
                 startActivity(intent);
             }
         });

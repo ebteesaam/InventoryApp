@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int INVENTORY_LOADER=0;
     InventoryCursorAdapter inventoryCursorAdapter;
+    ViewDetails seeDetails;
+    Button edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Find the ListView which will be populated with the pet data
         ListView listView = findViewById(R.id.list);
 
+        seeDetails = new ViewDetails(this, null);
+
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
@@ -67,6 +72,18 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startActivity(intent);
 
             }});
+
+//        edit=findViewById(R.id.editList);
+//        edit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+//                Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,0);
+//
+//                intent.setData(uri);
+//                startActivity(intent);
+//            }
+//        });
         getLoaderManager().initLoader(INVENTORY_LOADER,null,this);
     }
 
@@ -118,10 +135,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 InventoryContract.Entry._ID,
-                Entry.COLUMN_INVENTORY_NAME,
-                Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER,
-                Entry.COLUMN_INVENTORY_QUANTITY,
-                Entry.COLUMN_INVENTORY_PRICE};
+                InventoryContract.Entry.COLUMN_INVENTORY_NAME,
+                InventoryContract.Entry.COLUMN_INVENTORY_PRICE,
+                InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY,
+                InventoryContract.Entry.COLUMN_INVENTORY_IMAGE,
+                InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME,
+                InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL,
+                InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER};
         return new CursorLoader(this,InventoryContract.Entry.CONTENT_URI,projection,null,null,null);
     }
 
@@ -129,11 +149,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         inventoryCursorAdapter.swapCursor(cursor);
+        seeDetails.swapCursor(cursor);
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         inventoryCursorAdapter.swapCursor(null);
+        seeDetails.swapCursor(null);
 
     }
 
