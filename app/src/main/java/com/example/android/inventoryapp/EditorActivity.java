@@ -19,7 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.DbHelper;
@@ -27,11 +29,12 @@ import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-    private Uri mCurrentInventoryUri;
     private static final int EXISTING_PET_LOADER = 0;
+    private Uri mCurrentInventoryUri;
     private EditText mNameEditText;
     private EditText mPriceEditText;
-    private EditText mQuantityEditText, mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
+    private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
+    private TextView mQuantityEditText;
     private boolean mHasChanged = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -40,23 +43,26 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
     };
+    private int quantity;
+    private Button increament, decreament;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        Intent intent=getIntent();
-        mCurrentInventoryUri=intent.getData();
-        if(mCurrentInventoryUri==null){
+        Intent intent = getIntent();
+        mCurrentInventoryUri = intent.getData();
+        if (mCurrentInventoryUri == null) {
             setTitle(getString(R.string.editor_activity_title_new_product));
             invalidateOptionsMenu();
-        }else {
+        } else {
             setTitle(getString(R.string.editor_activity_title_edit_product));
             getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
         }
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_inventory_name);
         mPriceEditText = (EditText) findViewById(R.id.edit_inventory_price);
-        mQuantityEditText = (EditText) findViewById(R.id.edit_inventory_quantity);
+        mQuantityEditText = findViewById(R.id.edit_inventory_quantity);
         mImageEditText = (EditText) findViewById(R.id.edit_inventory_image);
         mSupplierName = (EditText) findViewById(R.id.edit_inventory_supplier_name);
         mSupplierEmail = (EditText) findViewById(R.id.edit_inventory_supplier_email);
@@ -68,33 +74,50 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierName.setOnTouchListener(mTouchListener);
         mSupplierEmail.setOnTouchListener(mTouchListener);
         mSupplierNumber.setOnTouchListener(mTouchListener);
+        Button call = findViewById(R.id.call);
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phone = mSupplierNumber.getText().toString().trim();
+                ;
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
+            }
+        });
+        increament = findViewById(R.id.increament);
+        increament.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                increament(view);
+            }
+        });
+        decreament = findViewById(R.id.decreament);
+        decreament.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                decreament(view);
+            }
+        });
 
     }
 
     private void savePet() {
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
-        int price ;
-       // if (!TextUtils.isEmpty(priceString)) {
-            //price = Integer.parseInt(priceString);
-      //  }
         String quantityString = mQuantityEditText.getText().toString().trim();
-        int quantity ;
-        //if (!TextUtils.isEmpty(quantityString)) {
-           // quantity = Integer.parseInt(quantityString);
-        //}
         String image = mImageEditText.getText().toString().trim();
         String suppliername = mSupplierName.getText().toString().trim();
         String supplierEmail = mSupplierEmail.getText().toString().trim();
         String supplierphone = mSupplierNumber.getText().toString().trim();
-//&& quantity==0 && price==0
+
         // and check if all the fields in the editor are blank
         if (mCurrentInventoryUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&TextUtils.isEmpty(image)&&TextUtils.isEmpty(suppliername)&&
-                TextUtils.isEmpty(supplierEmail)&&TextUtils.isEmpty(supplierphone) ){
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) && TextUtils.isEmpty(image) && TextUtils.isEmpty(suppliername) &&
+                TextUtils.isEmpty(supplierEmail) && TextUtils.isEmpty(supplierphone)) {
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
-            return;}
+            return;
+        }
 
         // Create database helper
         DbHelper mDbHelper = new DbHelper(this);
@@ -145,7 +168,28 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, getString(R.string.editor_update_inventory_successful),
                         Toast.LENGTH_SHORT).show();
             }
-    }}
+        }
+    }
+
+    public void increament(View view) {
+
+        quantity = quantity + 1;
+        display(quantity);
+    }
+
+    public void decreament(View view) {
+        if (quantity > 0) {
+            quantity = quantity - 1;
+            display(quantity);
+        } else {
+            return;
+        }
+    }
+
+    private void display(int number) {
+        TextView quantityTextView = (TextView) findViewById(R.id.edit_inventory_quantity);
+        quantityTextView.setText("" + number);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -209,7 +253,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Entry.COLUMN_INVENTORY_SUPPLIER_NAME,
                 Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL,
                 Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER};
-        return new CursorLoader(this,mCurrentInventoryUri,projection,null,null,null);
+        return new CursorLoader(this, mCurrentInventoryUri, projection, null, null, null);
 
     }
 
@@ -283,6 +327,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
     @Override
     public void onBackPressed() {
         // If the pet hasn't changed, continue with handling back button press
@@ -305,6 +350,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Show dialog that there are unsaved changes
         showUnsavedChangesDialog(discardButtonClickListener);
     }
+
     /**
      * This method is called after invalidateOptionsMenu(), so that the
      * menu can be updated (some menu items can be hidden or made visible).
@@ -319,6 +365,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         return true;
     }
+
     /**
      * Prompt the user to confirm that they want to delete this pet.
      */
@@ -347,6 +394,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
     /**
      * Perform the deletion of the pet in the database.
      */

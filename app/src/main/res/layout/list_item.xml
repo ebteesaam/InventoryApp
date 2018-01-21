@@ -36,28 +36,7 @@
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="#AEB6BD"  />
 
-        <ImageButton
-            android:id="@+id/call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/call" />
 </LinearLayout>
 
-    <!--<LinearLayout-->
-    <!--android:layout_weight="1"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical"-->
-    <!--android:padding="@dimen/activity_margin"-->
-    <!--android:layout_toRightOf="@id/l1">-->
-
-    <!--<ImageButton-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:src="@drawable/call"-->
-    <!--android:id="@+id/call"/>-->
-
-
-    <!--</LinearLayout>-->
 
 </RelativeLayout>

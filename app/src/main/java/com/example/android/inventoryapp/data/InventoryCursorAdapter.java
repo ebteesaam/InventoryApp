@@ -9,8 +9,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import com.example.android.inventoryapp.R;
  */
 
 public class InventoryCursorAdapter extends CursorAdapter {
-    String phone;
+
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
@@ -57,15 +59,12 @@ public class InventoryCursorAdapter extends CursorAdapter {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
         TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
-        //ImageButton call=view.findViewById(R.id.call);
 
-        //if(cursor.moveToFirst()) {
         // Find the columns of pet attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
         int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
         int priceColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
-        int phoneColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
-        phone = cursor.getString(phoneColumnIndex);
+
         // Read the pet attributes from the Cursor for the current pet
         String Name = cursor.getString(nameColumnIndex);
         int quantity = cursor.getInt(quantityColumnIndex);
@@ -73,7 +72,6 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         // Update the TextViews with the attributes for the current pet
         nameTextView.setText(Name);
-
         summaryTextView.setText(Integer.toString(quantity));
         priceTextView.setText("$" + String.format("%.2f", price));
 

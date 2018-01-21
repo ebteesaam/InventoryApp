@@ -19,7 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +34,6 @@ import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int INVENTORY_LOADER=0;
     InventoryCursorAdapter inventoryCursorAdapter;
-    private DbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +67,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startActivity(intent);
 
             }});
-        ImageButton call = findViewById(R.id.call);
-        call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String phone = Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER.trim().toString();
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);
-            }
-        });
         getLoaderManager().initLoader(INVENTORY_LOADER,null,this);
     }
 
@@ -135,27 +127,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        TextView nameTextView = findViewById(R.id.name);
-        TextView priceTextView = findViewById(R.id.price);
-        TextView summaryTextView = findViewById(R.id.summary);
-
-        //inventoryCursorAdapter.swapCursor(cursor);
-//        if(cursor.moveToFirst()) {
-//            int nameColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
-//            int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
-//            int priceColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
-
-
-        // Extract out the value from the Cursor for the given column index
-
-        //          final String Name = cursor.getString(nameColumnIndex);
-//            final int quantity = cursor.getInt(quantityColumnIndex);
-//            double price = cursor.getDouble(priceColumnIndex);
-
-        //           nameTextView.setText(Name);
-//            summaryTextView.setText(Integer.toString(quantity));
-//            priceTextView.setText("$" + String.format("%.2f", price));
-
 
         inventoryCursorAdapter.swapCursor(cursor);
     }

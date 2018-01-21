@@ -76,26 +76,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <!-- Label -->
         <TextView
             style="@style/CategoryStyle"
             android:text="@string/hint_inventory_quantity" />
 
-        <!-- Input fields -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:orientation="vertical"
-            android:paddingLeft="4dp">
+            android:orientation="horizontal">
 
-            <!-- Name field -->
-            <EditText
+            <Button
+                android:id="@+id/decreament"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="-" />
+
+            <TextView
                 android:id="@+id/edit_inventory_quantity"
-                style="@style/EditorFieldStyle"
-                android:hint="@string/hint_inventory_name"
-                android:inputType="numberDecimal" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="0"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/increament"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="+" />
 
         </LinearLayout>
     </LinearLayout>
@@ -168,6 +180,22 @@
                 android:inputType="phone" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/call"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:text="call supplier" />
+
     </LinearLayout>
 
 </LinearLayout>

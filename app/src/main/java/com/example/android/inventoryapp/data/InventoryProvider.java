@@ -22,17 +22,14 @@ public class InventoryProvider extends ContentProvider {
      * Tag for the log messages
      */
     public static final String LOG_TAG = InventoryProvider.class.getSimpleName();
-    private DbHelper dbHelper;
     /**
      * URI matcher code for the content URI for the INVENTORY table
      */
     private static final int INVENTORY = 100;
-
     /**
      * URI matcher code for the content URI for a single INVENTORY in the  table
      */
     private static final int INVENTORY_ID = 101;
-
     /**
      * UriMatcher object to match a content URI to a corresponding code.
      * The input passed into the constructor represents the code to return for the root URI.
@@ -47,6 +44,8 @@ public class InventoryProvider extends ContentProvider {
         sUriMatcher.addURI(CONTENT_AUTHORITY, PATH_INVENTORY + "/#", INVENTORY_ID);
 
     }
+
+    private DbHelper dbHelper;
 
     /**
      * Initialize the provider and the database helper object.
@@ -123,7 +122,7 @@ public class InventoryProvider extends ContentProvider {
      * for that specific row in the database.
      */
     private Uri insertInventory(Uri uri, ContentValues values) {
-       // Check that the name is not null
+        // Check that the name is not null
         String name = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
         if (name == null) {
             throw new IllegalArgumentException("Inventory requires a name");
@@ -133,11 +132,11 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Inventory requires a supplier name");
         }
         Integer quality = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
-        if (quality == null||quality<0) {
+        if (quality == null || quality < 0) {
             throw new IllegalArgumentException("Inventory requires a quantity");
         }
         Integer price = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
-        if (price == null||price<0) {
+        if (price == null || price < 0) {
             throw new IllegalArgumentException("Inventory requires a price");
         }
         String nameEmail = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
@@ -161,6 +160,7 @@ public class InventoryProvider extends ContentProvider {
         // return the new URI with the ID appended to the end of it
         return ContentUris.withAppendedId(uri, id);
     }
+
     /**
      * Updates the data at the given selection and selection arguments, with the new ContentValues.
      */
@@ -176,7 +176,7 @@ public class InventoryProvider extends ContentProvider {
                 // so we know which row to update. Selection will be "_id=?" and selection
                 // arguments will be a String array containing the actual ID.
                 selection = InventoryContract.Entry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateInvetory(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
@@ -192,59 +192,65 @@ public class InventoryProvider extends ContentProvider {
 
 
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_NAME)) {
-        String name = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
-        if (name == null) {
-            throw new IllegalArgumentException("Inventory requires a name");
-        }}
+            String name = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Inventory requires a name");
+            }
+        }
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME)) {
-        String nameSupplier = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME);
-        if (nameSupplier == null) {
-            throw new IllegalArgumentException("Inventory requires a supplier name");
-        }}
+            String nameSupplier = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME);
+            if (nameSupplier == null) {
+                throw new IllegalArgumentException("Inventory requires a supplier name");
+            }
+        }
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY)) {
-        Integer quality = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
-        if (quality == null||quality<0) {
-            throw new IllegalArgumentException("Inventory requires a quantity");
-        }}
+            Integer quality = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
+            if (quality == null || quality < 0) {
+                throw new IllegalArgumentException("Inventory requires a quantity");
+            }
+        }
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_PRICE)) {
-        Integer price = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
-        if (price == null||price<0) {
-            throw new IllegalArgumentException("Inventory requires a price");
-        }}
+            Integer price = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
+            if (price == null || price < 0) {
+                throw new IllegalArgumentException("Inventory requires a price");
+            }
+        }
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL)) {
-        String nameEmail = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
-        if (nameEmail == null) {
-            throw new IllegalArgumentException("Inventory requires a supplier email");
-        }}
+            String nameEmail = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
+            if (nameEmail == null) {
+                throw new IllegalArgumentException("Inventory requires a supplier email");
+            }
+        }
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_IMAGE)) {
             String nameEmail = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
             if (nameEmail == null) {
                 throw new IllegalArgumentException("Inventory requires image");
-            }}
+            }
+        }
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER)) {
             String nameEmail = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
             if (nameEmail == null) {
                 throw new IllegalArgumentException("Inventory requires phone number");
-            }}
+            }
+        }
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
             return 0;
         }
 
         // Otherwise, get writeable database to update the data
-        SQLiteDatabase database =dbHelper.getWritableDatabase();
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         int rowsUpdated = database.update(InventoryContract.Entry.TABLE_NAME, values, selection, selectionArgs);
 
         // If 1 or more rows were updated, then notify all listeners that the data at the
         // given URI has changed
-        if (rowsUpdated != 0) {getContext().getContentResolver().notifyChange(uri, null);
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
         }
         // Return the number of rows updated
         return rowsUpdated;
     }
-
-
 
 
     /**
@@ -265,7 +271,7 @@ public class InventoryProvider extends ContentProvider {
             case INVENTORY_ID:
                 // Delete a single row given by the ID in the URI
                 selection = InventoryContract.Entry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(InventoryContract.Entry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
@@ -277,7 +283,9 @@ public class InventoryProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         // Return the number of rows deleted
-        return rowsDeleted;}
+        return rowsDeleted;
+    }
+
     /**
      * Returns the MIME type of data for the content URI.
      */
