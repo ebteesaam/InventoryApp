@@ -2,6 +2,7 @@ package com.example.android.inventoryapp.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,11 +48,12 @@ public class InventoryCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
-
         TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
 
+        if(cursor.moveToFirst()) {
         // Find the columns of pet attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
         int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
@@ -60,11 +62,13 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         // Read the pet attributes from the Cursor for the current pet
         String Name = cursor.getString(nameColumnIndex);
-        String quantity = cursor.getString(quantityColumnIndex);
-        String price = cursor.getString(priceColumnIndex);
+       // int quantity = cursor.getInt(quantityColumnIndex);
+       // double price = cursor.getDouble(priceColumnIndex);
+
         // Update the TextViews with the attributes for the current pet
         nameTextView.setText(Name);
-        summaryTextView.setText(quantity);
-        priceTextView.setText(price);//
-    }
+      //  summaryTextView.setText(Integer.toString(quantity));
+       // priceTextView.setText("$" + String.format("%.2f", price));
+    }}
+
 }

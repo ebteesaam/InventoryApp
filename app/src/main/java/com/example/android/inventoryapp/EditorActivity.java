@@ -74,24 +74,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void savePet() {
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
-        int price = 0;
-        if (!TextUtils.isEmpty(priceString)) {
-            price = Integer.parseInt(priceString);
-        }
+        int price ;
+       // if (!TextUtils.isEmpty(priceString)) {
+            //price = Integer.parseInt(priceString);
+      //  }
         String quantityString = mQuantityEditText.getText().toString().trim();
-        int quantity = 1;
-        if (!TextUtils.isEmpty(quantityString)) {
-            quantity = Integer.parseInt(quantityString);
-        }
+        int quantity ;
+        //if (!TextUtils.isEmpty(quantityString)) {
+           // quantity = Integer.parseInt(quantityString);
+        //}
         String image = mImageEditText.getText().toString().trim();
         String suppliername = mSupplierName.getText().toString().trim();
         String supplierEmail = mSupplierEmail.getText().toString().trim();
         String supplierphone = mSupplierNumber.getText().toString().trim();
-
+//&& quantity==0 && price==0
         // and check if all the fields in the editor are blank
         if (mCurrentInventoryUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
-                quantity==0 && price==0&&TextUtils.isEmpty(image)&&TextUtils.isEmpty(suppliername)&&
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&TextUtils.isEmpty(image)&&TextUtils.isEmpty(suppliername)&&
                 TextUtils.isEmpty(supplierEmail)&&TextUtils.isEmpty(supplierphone) ){
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
@@ -106,8 +105,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-        values.put(Entry.COLUMN_INVENTORY_PRICE, price);
-        values.put(Entry.COLUMN_INVENTORY_QUANTITY, quantity);
+        values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
+        values.put(Entry.COLUMN_INVENTORY_QUANTITY, quantityString);
         values.put(Entry.COLUMN_INVENTORY_IMAGE, image);
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, suppliername);
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, supplierEmail);

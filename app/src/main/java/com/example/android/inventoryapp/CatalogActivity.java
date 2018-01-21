@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -119,7 +121,29 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-     inventoryCursorAdapter.swapCursor(cursor);
+//        TextView nameTextView = findViewById(R.id.name);
+//        TextView priceTextView = findViewById(R.id.price);
+//        TextView summaryTextView = findViewById(R.id.summary);
+//
+//     //inventoryCursorAdapter.swapCursor(cursor);
+//        if(cursor.moveToFirst()) {
+//            int nameColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
+//            int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
+//            int priceColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
+//
+//
+//            // Extract out the value from the Cursor for the given column index
+//
+//            final String Name = cursor.getString(nameColumnIndex);
+//            final int quantity = cursor.getInt(quantityColumnIndex);
+//            double price = cursor.getDouble(priceColumnIndex);
+//
+//            nameTextView.setText(Name);
+//            summaryTextView.setText(Integer.toString(quantity));
+//            priceTextView.setText("$" + String.format("%.2f", price));
+//
+//        }
+        inventoryCursorAdapter.swapCursor(cursor);
     }
 
     @Override
