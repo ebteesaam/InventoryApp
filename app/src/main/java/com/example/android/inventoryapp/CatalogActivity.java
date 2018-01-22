@@ -35,7 +35,7 @@ import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int INVENTORY_LOADER=0;
     InventoryCursorAdapter inventoryCursorAdapter;
-    ViewDetails seeDetails;
+    //SeeDetails seeDetails;
     Button edit;
 
     @Override
@@ -55,7 +55,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Find the ListView which will be populated with the pet data
         ListView listView = findViewById(R.id.list);
 
-        seeDetails = new ViewDetails(this, null);
+        // seeDetails = new SeeDetails(this, null);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
@@ -149,14 +149,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         inventoryCursorAdapter.swapCursor(cursor);
-        seeDetails.swapCursor(cursor);
+        //seeDetails.swapCursor(cursor);
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         inventoryCursorAdapter.swapCursor(null);
-        seeDetails.swapCursor(null);
+        //seeDetails.swapCursor(null);
 
     }
 
