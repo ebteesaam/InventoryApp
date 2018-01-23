@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -48,18 +49,18 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Intent intent = new Intent(CatalogActivity.this, AddProduct.class);
                 startActivity(intent);
             }
         });
         // Find the ListView which will be populated with the pet data
         ListView listView = findViewById(R.id.list);
 
-        // seeDetails = new SeeDetails(this, null);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         inventoryCursorAdapter=new InventoryCursorAdapter(this,null);
         listView.setAdapter(inventoryCursorAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,7 +87,17 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 //        });
         getLoaderManager().initLoader(INVENTORY_LOADER,null,this);
     }
-
+//    public void SalePrice(View v){
+//        TextView priceEditText = (TextView) findViewById(R.id.price);
+//
+//        String priceString = priceEditText.getText().toString().trim();
+//        double price=Integer.parseInt(priceString);
+//        price=price*0.2;
+//        ContentValues values = new ContentValues();
+//        values.put(Entry.COLUMN_INVENTORY_PRICE, price);
+//
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,6 +123,18 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, "Jack");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, "1dfdf@gg");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, 333);
+        getContentResolver().insert(Entry.CONTENT_URI, values);
+    }
+
+    public void insertPet(double price) {
+
+        // Gets the database in write mode
+        // Create a ContentValues object where column names are the keys,
+        //  attributes are the values.
+        ContentValues values = new ContentValues();
+
+        values.put(Entry.COLUMN_INVENTORY_PRICE, price);
+
         getContentResolver().insert(Entry.CONTENT_URI, values);
     }
 

@@ -10,14 +10,13 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,47 +26,34 @@ import android.widget.Toast;
 import com.example.android.inventoryapp.data.DbHelper;
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
-import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+/**
+ * Created by ebtesam on 1/22/2018 AD.
+ */
+
+public class AddProduct extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_PET_LOADER = 0;
     public static int quantityl;
-    public static String suppliername;
-    public static String supplierEmail;
-    public static String supplierphone;
     public EditText mNameEditText;
-    public String nameString;
     public int price;
     public String image;
-    ViewDetails seeDetails;
     private Uri mCurrentInventoryUri;
     private EditText mPriceEditText;
     private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
     private TextView mQuantityEditText;
-    private boolean mHasChanged = false;
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            mHasChanged = true;
-            return false;
-        }
-    };
     private int quantity;
     private Button increament, decreament;
-    //private double sale=1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
         Intent intent = getIntent();
         mCurrentInventoryUri = intent.getData();
         if (mCurrentInventoryUri == null) {
             setTitle(getString(R.string.editor_activity_title_new_product));
             invalidateOptionsMenu();
-        } else {
-            setTitle(getString(R.string.editor_activity_title_edit_product));
-            getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
         }
         // Find all relevant views that we will need to read user input from
         mNameEditText = findViewById(R.id.edit_inventory_name);
@@ -77,42 +63,27 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierName = findViewById(R.id.edit_inventory_supplier_name);
         mSupplierEmail = findViewById(R.id.edit_inventory_supplier_email);
         mSupplierNumber = findViewById(R.id.edit_inventory_supplier_phone);
-        mNameEditText.setOnTouchListener(mTouchListener);
-        mPriceEditText.setOnTouchListener(mTouchListener);
-        mQuantityEditText.setOnTouchListener(mTouchListener);
-        mImageEditText.setOnTouchListener(mTouchListener);
-        mSupplierName.setOnTouchListener(mTouchListener);
-        mSupplierEmail.setOnTouchListener(mTouchListener);
-        mSupplierNumber.setOnTouchListener(mTouchListener);
-        Button call = findViewById(R.id.call);
-        call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String phone = mSupplierNumber.getText().toString().trim();
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);
-            }
-        });
 
-//        Button saleB=findViewById(R.id.sale);
-//        saleB.setOnClickListener(new View.OnClickListener() {
+        Button call = findViewById(R.id.call);
+        call.setVisibility(View.GONE);
+//        call.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//              sale=0.2;
-//              saveInventory(sale);
+//                String phone = mSupplierNumber.getText().toString().trim();
+//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+//                startActivity(intent);
 //            }
 //        });
+
         Button view = findViewById(R.id.view);
-//        seeDetails=new ViewDetails(this,null);
-//        view.setAdapter(seeDetails);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
-                Intent intent = new Intent(EditorActivity.this, SeeDetails.class);
-                startActivity(intent);
-            }
-        });
+        view.setVisibility(View.GONE);
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(AddProduct.this, SeeDetails.class);
+//                startActivity(intent);
+//            }
+//        });
         increament = findViewById(R.id.increament);
         increament.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +112,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // and check if all the fields in the editor are blank
         if (mCurrentInventoryUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) && TextUtils.isEmpty(image) && TextUtils.isEmpty(suppliername) &&
+                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(image) && TextUtils.isEmpty(suppliername) &&
                 TextUtils.isEmpty(supplierEmail) && TextUtils.isEmpty(supplierphone)) {
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
@@ -149,80 +120,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         // Create database helper
-        DbHelper mDbHelper = new DbHelper(this);
+//        DbHelper mDbHelper = new DbHelper(this);
 
         // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-//        int pric = 0;
-//
-//        if (!TextUtils.isEmpty(priceString)) {
-//            pric = Integer.parseInt(priceString);
-//
-//        }
         values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
         values.put(Entry.COLUMN_INVENTORY_QUANTITY, quantityString);
         values.put(Entry.COLUMN_INVENTORY_IMAGE, image);
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, suppliername);
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, supplierEmail);
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, supplierphone);
-
-        // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
-        if (mCurrentInventoryUri == null) {
-            // This is a NEW pet, so insert a new pet into the provider,
-            // returning the content URI for the new pet.
-            Uri newUri = getContentResolver().insert(Entry.CONTENT_URI, values);
-
-            // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
-                // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(this, getString(R.string.editor_insert_inventory_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_insert_inventory_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentPetUri
-            // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentPetUri will already identify the correct row in the database that
-            // we want to modify.
-            int rowsAffected = getContentResolver().update(mCurrentInventoryUri, values, null, null);
-
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, getString(R.string.editor_update_inventory_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_inventory_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
-
-    public void saveInventory(String nameString, String priceString) {
-        nameString = mNameEditText.getText().toString().trim();
-        //priceString = mPriceEditText.getText().toString().trim();
-
-
-        // Create database helper
-        DbHelper mDbHelper = new DbHelper(this);
-
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        // and Toto's pet attributes are the values.
-        ContentValues values = new ContentValues();
-        values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-        values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
-
 
         // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
         if (mCurrentInventoryUri == null) {
@@ -308,32 +219,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case android.R.id.home:
                 // If the pet hasn't changed, continue with navigating up to parent activity
                 // which is the {@link CatalogActivity}.
-                if (!mHasChanged) {
-                    NavUtils.navigateUpFromSameTask(EditorActivity.this);
-                    return true;
-                }
-
-                // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-                // Create a click listener to handle the user confirming that
-                // changes should be discarded.
-                DialogInterface.OnClickListener discardButtonClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // User clicked "Discard" button, navigate to parent activity.
-                                NavUtils.navigateUpFromSameTask(EditorActivity.this);
-                            }
-                        };
-
-                // Show a dialog that notifies the user they have unsaved changes
-                showUnsavedChangesDialog(discardButtonClickListener);
+                saveInventory();
+                Intent intent = new Intent(AddProduct.this, CatalogActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    public Loader onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 InventoryContract.Entry._ID,
                 Entry.COLUMN_INVENTORY_NAME,
@@ -343,7 +238,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Entry.COLUMN_INVENTORY_SUPPLIER_NAME,
                 Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL,
                 Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER};
-        return new CursorLoader(this, mCurrentInventoryUri, projection, null, null, null);
+        return new CursorLoader(this, mCurrentInventoryUri,
+                projection, null, null, null);
 
     }
 
@@ -363,8 +259,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int quantityColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_QUANTITY);
             int imagetColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_IMAGE);
             int sunameColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_NAME);
-            int subemailColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
-            int phoneColumnIndex = cursor.getColumnIndex(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
+            int subemailColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
+            int phoneColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER);
 
             // Extract out the value from the Cursor for the given column index
             String nameString = cursor.getString(nameColumnIndex);
@@ -396,50 +292,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierNumber.setText("");
     }
 
-    private void showUnsavedChangesDialog(
-            DialogInterface.OnClickListener discardButtonClickListener) {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.unsaved_changes_dialog_msg);
-        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        // Create and show the AlertDialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        // If the pet hasn't changed, continue with handling back button press
-        if (!mHasChanged) {
-            super.onBackPressed();
-            return;
-        }
-
-        // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-        // Create a click listener to handle the user confirming that changes should be discarded.
-        DialogInterface.OnClickListener discardButtonClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // User clicked "Discard" button, close the current activity.
-                        finish();
-                    }
-                };
-
-        // Show dialog that there are unsaved changes
-        showUnsavedChangesDialog(discardButtonClickListener);
-    }
 
     /**
      * This method is called after invalidateOptionsMenu(), so that the
@@ -511,4 +363,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Close the activity
         finish();
     }
+
 }
+
+

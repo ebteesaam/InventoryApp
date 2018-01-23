@@ -133,11 +133,11 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Inventory requires a supplier name");
         }
         Integer quality = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
-        if (quality == null || quality < 0) {
+        if (quality == null) {//|| quality < 0
             throw new IllegalArgumentException("Inventory requires a quantity");
         }
-        Integer price = values.getAsInteger(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
-        if (price == null || price < 0) {
+        Double price = values.getAsDouble(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
+        if (price == null) {//|| price < 0
             throw new IllegalArgumentException("Inventory requires a price");
         }
         String nameEmail = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
