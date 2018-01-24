@@ -74,7 +74,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         int nameColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
         int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
         int priceColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
-
+        editorActivity = new EditorActivity();
         // Read the pet attributes from the Cursor for the current pet
         String Name = cursor.getString(nameColumnIndex);
         int quantity = cursor.getInt(quantityColumnIndex);
@@ -97,6 +97,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         }
 
         price = price * sale;
+        //String priceS= String.valueOf(price);
         // Update the TextViews with the attributes for the current pet
         nameTextView.setText(Name);
         summaryTextView.setText(Integer.toString(quantity));
