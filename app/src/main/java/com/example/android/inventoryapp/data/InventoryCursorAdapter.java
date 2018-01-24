@@ -80,13 +80,11 @@ public class InventoryCursorAdapter extends CursorAdapter {
         int quantity = cursor.getInt(quantityColumnIndex);
         price = cursor.getDouble(priceColumnIndex);
         if (TextUtils.isEmpty(Name)) {
-            Name = context.getString(R.string.empty_view_subtitle_text);
+            Name = context.getString(R.string.unknown_name);
         }
-
         saleB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 b = true;
                 saleB.setVisibility(View.GONE); // hide it
@@ -95,10 +93,6 @@ public class InventoryCursorAdapter extends CursorAdapter {
         });
         if (b == true) {
             sale = 0.2;
-
-//           String withSale=Double.toString(sale);
-//            catalogActivity.insertPet(sale);
-//            catalogActivity.finish();
             saleB.setVisibility(View.GONE);
         }
 

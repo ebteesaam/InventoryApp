@@ -47,7 +47,7 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
     public String nameString;
     public int price;
     public String image;
-    ViewDetails seeDetails;
+
     CatalogActivity catalogActivity;
     private Uri mCurrentInventoryUri;
     private TextView mPriceEditText;
@@ -79,8 +79,22 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
         mSupplierName = findViewById(R.id.edit_inventory_supplier_name);
         mSupplierEmail = findViewById(R.id.edit_inventory_supplier_email);
         mSupplierNumber = findViewById(R.id.edit_inventory_supplier_phone);
-        //mNameEditText.setKeyListener(null);
-        //mNameEditText.setEnabled(false);
+
+
+        increament = findViewById(R.id.increament);
+        increament.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                increament(mQuantityEditText);
+            }
+        });
+        decreament = findViewById(R.id.decreament);
+        decreament.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                decreament(mQuantityEditText);
+            }
+        });
 
         Button call = findViewById(R.id.call);
         call.setOnClickListener(new View.OnClickListener() {
@@ -114,20 +128,6 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
             }
         });
 
-        increament = findViewById(R.id.increament);
-        increament.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                increament(mQuantityEditText);
-            }
-        });
-        decreament = findViewById(R.id.decreament);
-        decreament.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                decreament(mQuantityEditText);
-            }
-        });
 
     }
 
@@ -208,59 +208,6 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    public void saveInventory(String nameString, String priceString) {
-        nameString = mNameEditText.getText().toString().trim();
-        //priceString = mPriceEditText.getText().toString().trim();
-
-
-        // Create database helper
-        DbHelper mDbHelper = new DbHelper(this);
-
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        // and Toto's pet attributes are the values.
-        ContentValues values = new ContentValues();
-        values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-        values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
-
-
-        // Determine if this is a new or existing pet by checking if mCurrentPetUri is null or not
-        if (mCurrentInventoryUri == null) {
-            // This is a NEW pet, so insert a new pet into the provider,
-            // returning the content URI for the new pet.
-            Uri newUri = getContentResolver().insert(Entry.CONTENT_URI, values);
-
-            // Show a toast message depending on whether or not the insertion was successful.
-            if (newUri == null) {
-                // If the new content URI is null, then there was an error with insertion.
-                Toast.makeText(this, getString(R.string.editor_insert_inventory_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the insertion was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_insert_inventory_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentPetUri
-            // and pass in the new ContentValues. Pass in null for the selection and selection args
-            // because mCurrentPetUri will already identify the correct row in the database that
-            // we want to modify.
-            int rowsAffected = getContentResolver().update(mCurrentInventoryUri, values, null, null);
-
-            // Show a toast message depending on whether or not the update was successful.
-            if (rowsAffected == 0) {
-                // If no rows were affected, then there was an error with the update.
-                Toast.makeText(this, getString(R.string.editor_update_inventory_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_inventory_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     public void increament(View view) {
         quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         quantity = quantity + 1;
@@ -282,11 +229,12 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
         mQuantityEditText.setText("" + number);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        getMenuInflater().inflate(R.menu.menu_view, menu);
         return true;
     }
 

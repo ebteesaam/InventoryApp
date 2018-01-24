@@ -25,15 +25,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity" />
         </activity>
-
+        <activity
+            android:name=".AddProduct"
+            android:parentActivityName=".CatalogActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CatalogActivity" />
+        </activity>
+        <activity
+            android:name=".ViewProduct"
+            android:parentActivityName=".CatalogActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CatalogActivity" />
+        </activity>
         <provider
             android:name=".data.InventoryProvider"
             android:authorities="com.example.android.inventoryapp"
             android:exported="false" />
 
-        <activity android:name=".SeeDetails"></activity>
-        <activity android:name=".AddProduct"></activity>
-        <activity android:name=".ViewProduct"></activity>
     </application>
 
 </manifest>

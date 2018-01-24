@@ -41,7 +41,7 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
     private EditText mPriceEditText;
     private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
     private TextView mQuantityEditText;
-    private int quantity;
+    private int quantity = 1;
     private int mquantity = 0;
     private int mprice = 0;
     private Button increament, decreament;
@@ -66,26 +66,6 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
         mSupplierEmail = findViewById(R.id.edit_inventory_supplier_email);
         mSupplierNumber = findViewById(R.id.edit_inventory_supplier_phone);
 
-        Button call = findViewById(R.id.call);
-        call.setVisibility(View.GONE);
-//        call.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String phone = mSupplierNumber.getText().toString().trim();
-//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-//                startActivity(intent);
-//            }
-//        });
-
-        Button view = findViewById(R.id.view);
-        view.setVisibility(View.GONE);
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AddProduct.this, SeeDetails.class);
-//                startActivity(intent);
-//            }
-//        });
         increament = findViewById(R.id.increament);
         increament.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,12 +103,6 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
         }
-
-        // Create database helper
-//        DbHelper mDbHelper = new DbHelper(this);
-
-        // Gets the database in write mode
-//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
@@ -254,7 +228,7 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-// Bail early if the cursor is null or there is less than 1 row in the cursor
+        // Bail early if the cursor is null or there is less than 1 row in the cursor
         if (cursor == null || cursor.getCount() < 1) {
             return;
         }
@@ -309,11 +283,6 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        // If this is a new pet, hide the "Delete" menu item.
-        if (mCurrentInventoryUri == null) {
-            MenuItem menuItem = menu.findItem(R.id.action_delete);
-            menuItem.setVisible(false);
-        }
         return true;
     }
 

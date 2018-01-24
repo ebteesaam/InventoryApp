@@ -47,6 +47,7 @@
 
     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
+    <string name="unknown_name">unKnown name</string>
     <!-- Units [CHAR LIMIT=5] -->
     <string name="unit_inventory_price">$</string>
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>

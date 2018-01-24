@@ -33,12 +33,10 @@ import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
 import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
-public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-    private static final int INVENTORY_LOADER=0;
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int INVENTORY_LOADER = 0;
     static long lo;
     InventoryCursorAdapter inventoryCursorAdapter;
-    //SeeDetails seeDetails;
-    Button edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,33 +60,24 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        inventoryCursorAdapter=new InventoryCursorAdapter(this,null);
+        inventoryCursorAdapter = new InventoryCursorAdapter(this, null);
         listView.setAdapter(inventoryCursorAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(CatalogActivity.this, ViewProduct.class);
-                Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,l);
+                Uri uri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, l);
                 lo = l;
                 intent.setData(uri);
                 startActivity(intent);
 
-            }});
+            }
+        });
 
-//        edit=findViewById(R.id.editList);
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
-//                Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,0);
-//
-//                intent.setData(uri);
-//                startActivity(intent);
-//            }
-//        });
-        getLoaderManager().initLoader(INVENTORY_LOADER,null,this);
+        getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
-//    public void SalePrice(View v){
+
+    //    public void SalePrice(View v){
 //        TextView priceEditText = (TextView) findViewById(R.id.price);
 //
 //        String priceString = priceEditText.getText().toString().trim();
@@ -99,12 +88,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 //
 //
 //    }
-//public void edit(){
-//    Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
-//    Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,lo);
-//    intent.setData(uri);
-//    startActivity(intent);
-//}
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -171,12 +155,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME,
                 InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL,
                 InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER};
-        return new CursorLoader(this,InventoryContract.Entry.CONTENT_URI,projection,null,null,null);
+        return new CursorLoader(this, InventoryContract.Entry.CONTENT_URI, projection, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
         inventoryCursorAdapter.swapCursor(cursor);
         //seeDetails.swapCursor(cursor);
 

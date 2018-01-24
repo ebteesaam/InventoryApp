@@ -89,6 +89,11 @@
             android:orientation="horizontal"
             android:paddingTop="12dp">
 
+            <Button
+                android:id="@+id/decreament"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="-" />
 
             <TextView
                 android:id="@+id/edit_inventory_quantity"
@@ -96,9 +101,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="0"
+                android:text="1"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/increament"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="+" />
 
 
         </LinearLayout>

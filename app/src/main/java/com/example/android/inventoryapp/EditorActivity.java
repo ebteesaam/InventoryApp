@@ -30,17 +30,10 @@ import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
 import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_PET_LOADER = 0;
-    public static int quantityl;
-    public static String suppliername;
-    public static String supplierEmail;
-    public static String supplierphone;
     public EditText mNameEditText;
-    public String nameString;
     public int price;
-    public String image;
-    ViewDetails seeDetails;
     private Uri mCurrentInventoryUri;
     private EditText mPriceEditText;
     private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
@@ -85,15 +78,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierName.setOnTouchListener(mTouchListener);
         mSupplierEmail.setOnTouchListener(mTouchListener);
         mSupplierNumber.setOnTouchListener(mTouchListener);
-        Button call = findViewById(R.id.call);
-        call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String phone = mSupplierNumber.getText().toString().trim();
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);
-            }
-        });
 
 //        Button saleB=findViewById(R.id.sale);
 //        saleB.setOnClickListener(new View.OnClickListener() {
@@ -103,20 +87,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 //              saveInventory(sale);
 //            }
 //        });
-        Button view = findViewById(R.id.view);
-//        seeDetails=new ViewDetails(this,null);
-//        view.setAdapter(seeDetails);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
-                Intent intent = new Intent(EditorActivity.this, ViewProduct.class);
-                Uri uri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, CatalogActivity.lo);
-                intent.setData(uri);
-                startActivity(intent);
-            }
-        });
         increament = findViewById(R.id.increament);
         increament.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,12 +132,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-//        int pric = 0;
-//
-//        if (!TextUtils.isEmpty(priceString)) {
-//            pric = Integer.parseInt(priceString);
-//
-//        }
+        //        int pric = 0;
+        //
+        //        if (!TextUtils.isEmpty(priceString)) {
+        //            pric = Integer.parseInt(priceString);
+        //
+        //        }
         values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
         values.put(Entry.COLUMN_INVENTORY_QUANTITY, quantityString);
         values.put(Entry.COLUMN_INVENTORY_IMAGE, image);
@@ -303,12 +274,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 saveInventory();
                 finish();
                 return true;
-            // Respond to a click on the "Delete" menu option
-            case R.id.action_delete:
-                // Do nothing for now
-                showDeleteConfirmationDialog();
-                return true;
-            // Respond to a click on the "Up" arrow button in the app bar
+
             case android.R.id.home:
                 // If the pet hasn't changed, continue with navigating up to parent activity
                 // which is the {@link CatalogActivity}.
