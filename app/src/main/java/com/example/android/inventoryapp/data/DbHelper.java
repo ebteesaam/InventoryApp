@@ -24,12 +24,12 @@ public class DbHelper extends SQLiteOpenHelper {
         // Create a String that contains the SQL statement to create the  table
         String SQL_CREATE_INVENTORY_TABLE = "CREATE TABLE " + InventoryContract.Entry.TABLE_NAME + " ("
                 + InventoryContract.Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + InventoryContract.Entry.COLUMN_INVENTORY_NAME + " TEXT NOT NULL, "
-                + InventoryContract.Entry.COLUMN_INVENTORY_PRICE + " INTEGER NOT NULL,"
-                + InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY + " INTEGER NOT NULL DEFAULT 1,"
-                + InventoryContract.Entry.COLUMN_INVENTORY_IMAGE + " INTEGER,"
-                + InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME + " TEXT NOT NULL,"
-                + InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL + " TEXT NOT NULL,"
+                + InventoryContract.Entry.COLUMN_INVENTORY_NAME + " TEXT, "
+                + InventoryContract.Entry.COLUMN_INVENTORY_PRICE + " INTEGER DEFAULT 0,"
+                + InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY + " INTEGER DEFAULT 0,"
+                + InventoryContract.Entry.COLUMN_INVENTORY_IMAGE + " TEXT,"
+                + InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_NAME + " TEXT,"
+                + InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL + " TEXT,"
                 + InventoryContract.Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER + " INTEGER );";
 
         // Execute the SQL statement

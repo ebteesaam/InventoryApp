@@ -35,6 +35,7 @@ import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int INVENTORY_LOADER=0;
+    static long lo;
     InventoryCursorAdapter inventoryCursorAdapter;
     //SeeDetails seeDetails;
     Button edit;
@@ -66,9 +67,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Intent intent = new Intent(CatalogActivity.this, ViewProduct.class);
                 Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,l);
-
+                lo = l;
                 intent.setData(uri);
                 startActivity(intent);
 
@@ -98,7 +99,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 //
 //
 //    }
-
+//public void edit(){
+//    Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+//    Uri uri= ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI,lo);
+//    intent.setData(uri);
+//    startActivity(intent);
+//}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.

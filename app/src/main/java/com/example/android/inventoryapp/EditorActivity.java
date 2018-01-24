@@ -2,6 +2,7 @@ package com.example.android.inventoryapp;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -105,11 +106,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Button view = findViewById(R.id.view);
 //        seeDetails=new ViewDetails(this,null);
 //        view.setAdapter(seeDetails);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
-                Intent intent = new Intent(EditorActivity.this, SeeDetails.class);
+                Intent intent = new Intent(EditorActivity.this, ViewProduct.class);
+                Uri uri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, CatalogActivity.lo);
+                intent.setData(uri);
                 startActivity(intent);
             }
         });

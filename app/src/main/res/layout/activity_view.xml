@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/activity_margin"
-    tools:context=".EditorActivity">
+    tools:context=".ViewProduct">
 
     <!-- Overview category -->
     <LinearLayout
@@ -27,11 +27,12 @@
             android:paddingLeft="4dp">
 
             <!-- Name field -->
-            <EditText
+            <TextView
                 android:id="@+id/edit_inventory_name"
                 style="@style/EditorFieldStyle"
+                android:layout_height="match_parent"
                 android:hint="@string/hint_inventory_name"
-                android:inputType="textCapWords" />
+                android:paddingTop="12dp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -57,7 +58,7 @@
             android:paddingLeft="4dp">
 
             <!-- price -->
-            <EditText
+            <TextView
                 android:id="@+id/edit_inventory_price"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_price"
@@ -85,13 +86,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="12dp">
 
-            <Button
-                android:id="@+id/decreament"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:text="-" />
 
             <TextView
                 android:id="@+id/edit_inventory_quantity"
@@ -103,11 +100,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/increament"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:text="+" />
 
         </LinearLayout>
     </LinearLayout>
@@ -132,11 +124,12 @@
             android:paddingLeft="4dp">
 
             <!-- Name field -->
-            <EditText
+            <TextView
                 android:id="@+id/edit_inventory_image"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:paddingTop="12dp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -161,49 +154,49 @@
             android:paddingLeft="4dp">
 
             <!-- Name field -->
-            <EditText
+            <TextView
                 android:id="@+id/edit_inventory_supplier_name"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_supplier_name"
-                android:inputType="textCapWords" />
+                android:paddingTop="12dp" />
             <!-- Name field -->
-            <EditText
+            <TextView
                 android:id="@+id/edit_inventory_supplier_email"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_supplier_email"
-                android:inputType="text" />
+                android:paddingTop="12dp" />
             <!-- Name field -->
-            <EditText
+            <TextView
                 android:id="@+id/edit_inventory_supplier_phone"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_inventory_supplier_phone_number"
-                android:inputType="phone" />
+                android:paddingTop="12dp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <!--<Button-->
-    <!--android:id="@+id/call"-->
-    <!--style="@style/EditorFieldStyle"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:paddingTop="16dp"-->
-    <!--android:text="call supplier" />-->
+        <Button
+            android:id="@+id/call"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="call supplier" />
 
-    <!--<Button-->
-    <!--android:id="@+id/view"-->
-    <!--style="@style/EditorFieldStyle"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="16dp"-->
-    <!--android:text="view product" />-->
+        <Button
+            android:id="@+id/view"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="edit product" />
 
-    <!--</LinearLayout>-->
+    </LinearLayout>
 
 </LinearLayout>
