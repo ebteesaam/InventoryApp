@@ -195,6 +195,7 @@ public class InventoryProvider extends ContentProvider {
         if (values.containsKey(InventoryContract.Entry.COLUMN_INVENTORY_NAME)) {
             String name = values.getAsString(InventoryContract.Entry.COLUMN_INVENTORY_NAME);
             if (name == null) {
+                Toast.makeText(getContext(), "Need name", Toast.LENGTH_SHORT).show();
                 throw new IllegalArgumentException("Inventory requires a name");
             }
         }

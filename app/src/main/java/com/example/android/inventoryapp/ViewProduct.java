@@ -9,29 +9,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.DbHelper;
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
-import com.example.android.inventoryapp.data.InventoryCursorAdapter;
-import com.example.android.inventoryapp.data.InventoryProvider;
+
 
 /**
  * Created by ebtesam on 1/23/2018 AD.
@@ -39,16 +32,8 @@ import com.example.android.inventoryapp.data.InventoryProvider;
 
 public class ViewProduct extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_PET_LOADER = 0;
-    public static int quantityl;
-    public static String suppliername;
-    public static String supplierEmail;
-    public static String supplierphone;
     public TextView mNameEditText;
-    public String nameString;
     public int price;
-    public String image;
-
-    CatalogActivity catalogActivity;
     private Uri mCurrentInventoryUri;
     private TextView mPriceEditText;
     private TextView mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
@@ -56,7 +41,7 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
     private boolean mHasChanged = false;
     private int quantity;
     private Button increament, decreament;
-    //private double sale=1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,25 +91,14 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
             }
         });
 
-//        Button saleB=findViewById(R.id.sale);
-//        saleB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//              sale=0.2;
-//              saveInventory(sale);
-//            }
-//        });
         Button view = findViewById(R.id.view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
                 Intent intent = new Intent(ViewProduct.this, EditorActivity.class);
                 Uri uri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, CatalogActivity.lo);
                 intent.setData(uri);
                 startActivity(intent);
-//catalogActivity=new CatalogActivity();
-//                catalogActivity.edit();
             }
         });
 
@@ -149,21 +123,10 @@ public class ViewProduct extends AppCompatActivity implements LoaderManager.Load
             return;
         }
 
-        // Create database helper
-        DbHelper mDbHelper = new DbHelper(this);
-
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-//        int pric = 0;
-//
-//        if (!TextUtils.isEmpty(priceString)) {
-//            pric = Integer.parseInt(priceString);
-//
-//        }
         values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
         values.put(Entry.COLUMN_INVENTORY_QUANTITY, quantityString);
         values.put(Entry.COLUMN_INVENTORY_IMAGE, image);

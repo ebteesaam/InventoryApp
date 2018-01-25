@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,6 @@ import android.widget.Toast;
 import com.example.android.inventoryapp.data.DbHelper;
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
-import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_PET_LOADER = 0;
@@ -38,6 +36,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mPriceEditText;
     private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
     private TextView mQuantityEditText;
+    private int mquantity = 0;
+    private int mprice = 0;
     private boolean mHasChanged = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -48,7 +48,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     };
     private int quantity;
     private Button increament, decreament;
-    //private double sale=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,15 +78,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierEmail.setOnTouchListener(mTouchListener);
         mSupplierNumber.setOnTouchListener(mTouchListener);
 
-//        Button saleB=findViewById(R.id.sale);
-//        saleB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//              sale=0.2;
-//              saveInventory(sale);
-//            }
-//        });
-
         increament = findViewById(R.id.increament);
         increament.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,29 +105,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String supplierphone = mSupplierNumber.getText().toString().trim();
 
         // and check if all the fields in the editor are blank
-        if (mCurrentInventoryUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) && TextUtils.isEmpty(image) && TextUtils.isEmpty(suppliername) &&
-                TextUtils.isEmpty(supplierEmail) && TextUtils.isEmpty(supplierphone)) {
+        if (mCurrentInventoryUri == null ||
+                TextUtils.isEmpty(nameString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(image) || TextUtils.isEmpty(suppliername) ||
+                TextUtils.isEmpty(supplierEmail) || TextUtils.isEmpty(supplierphone) || mquantity == Integer.parseInt(quantityString)
+                || mprice == Integer.parseInt(priceString)) {
+            Toast.makeText(this, "Enter all information please, Don't leave space please, try again", Toast.LENGTH_LONG).show();
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
         }
 
-        // Create database helper
-        DbHelper mDbHelper = new DbHelper(this);
-
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_INVENTORY_NAME, nameString);
-        //        int pric = 0;
-        //
-        //        if (!TextUtils.isEmpty(priceString)) {
-        //            pric = Integer.parseInt(priceString);
-        //
-        //        }
         values.put(Entry.COLUMN_INVENTORY_PRICE, priceString);
         values.put(Entry.COLUMN_INVENTORY_QUANTITY, quantityString);
         values.put(Entry.COLUMN_INVENTORY_IMAGE, image);
@@ -293,6 +273,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String supplierEmail = cursor.getString(subemailColumnIndex);
             String supplierphone = cursor.getString(phoneColumnIndex);
             // Update the views on the screen with the values from the database
+
             mNameEditText.setText(nameString);
             mPriceEditText.setText(Integer.toString(price));
             mQuantityEditText.setText(Integer.toString(quantity));

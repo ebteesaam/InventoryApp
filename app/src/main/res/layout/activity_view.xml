@@ -198,7 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="call supplier" />
+            android:text="Call Supplier" />
 
         <Button
             android:id="@+id/view"
@@ -206,7 +206,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="edit product" />
+            android:text="Edit Product" />
 
     </LinearLayout>
 

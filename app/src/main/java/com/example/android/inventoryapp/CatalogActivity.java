@@ -7,9 +7,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -18,24 +15,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.android.inventoryapp.data.DbHelper;
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.Entry;
 import com.example.android.inventoryapp.data.InventoryCursorAdapter;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int INVENTORY_LOADER = 0;
-    static long lo;
+    public static long lo;
     InventoryCursorAdapter inventoryCursorAdapter;
 
     @Override
@@ -77,18 +65,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
 
-    //    public void SalePrice(View v){
-//        TextView priceEditText = (TextView) findViewById(R.id.price);
-//
-//        String priceString = priceEditText.getText().toString().trim();
-//        double price=Integer.parseInt(priceString);
-//        price=price*0.2;
-//        ContentValues values = new ContentValues();
-//        values.put(Entry.COLUMN_INVENTORY_PRICE, price);
-//
-//
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -113,18 +89,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_NAME, "Jack");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_EMAIL, "1dfdf@gg");
         values.put(Entry.COLUMN_INVENTORY_SUPPLIER_PHONE_NUMBER, 333);
-        getContentResolver().insert(Entry.CONTENT_URI, values);
-    }
-
-    public void insertPet(double price) {
-
-        // Gets the database in write mode
-        // Create a ContentValues object where column names are the keys,
-        //  attributes are the values.
-        ContentValues values = new ContentValues();
-
-        values.put(Entry.COLUMN_INVENTORY_PRICE, price);
-
         getContentResolver().insert(Entry.CONTENT_URI, values);
     }
 
@@ -161,14 +125,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         inventoryCursorAdapter.swapCursor(cursor);
-        //seeDetails.swapCursor(cursor);
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         inventoryCursorAdapter.swapCursor(null);
-        //seeDetails.swapCursor(null);
 
     }
 

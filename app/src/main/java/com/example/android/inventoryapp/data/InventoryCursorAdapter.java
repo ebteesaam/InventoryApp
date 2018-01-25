@@ -1,5 +1,7 @@
 package com.example.android.inventoryapp.data;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -28,10 +30,8 @@ import com.example.android.inventoryapp.R;
 
 public class InventoryCursorAdapter extends CursorAdapter {
     EditorActivity editorActivity;
-    CatalogActivity catalogActivity;
     private double price;
-    private double sale = 1;
-    private boolean b = false;
+
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
@@ -63,9 +63,9 @@ public class InventoryCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
 
-        TextView nameTextView = (TextView) view.findViewById(R.id.name);
-        TextView priceTextView = (TextView) view.findViewById(R.id.price);
-        TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
+        TextView nameTextView = view.findViewById(R.id.name);
+        TextView priceTextView = view.findViewById(R.id.price);
+        TextView summaryTextView = view.findViewById(R.id.summary);
         final Button saleB = view.findViewById(R.id.sale);
         saleB.setFocusable(false);
         saleB.setFocusableInTouchMode(false);
@@ -77,27 +77,44 @@ public class InventoryCursorAdapter extends CursorAdapter {
         editorActivity = new EditorActivity();
         // Read the pet attributes from the Cursor for the current pet
         String Name = cursor.getString(nameColumnIndex);
-        int quantity = cursor.getInt(quantityColumnIndex);
+        final int quantity = cursor.getInt(quantityColumnIndex);
         price = cursor.getDouble(priceColumnIndex);
         if (TextUtils.isEmpty(Name)) {
             Name = context.getString(R.string.unknown_name);
         }
+
         saleB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                b = true;
-                saleB.setVisibility(View.GONE); // hide it
-                saleB.setClickable(false);
+                ContentResolver resolver = context.getContentResolver();
+
+
+                ContentValues values = new ContentValues();
+
+
+                if (quantity > 0) {
+
+                    // Create a new uri for this product ( ListItem)
+                    Uri CurrentUri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, CatalogActivity.lo);
+
+                    // Present a new variable to send the reduced quantity to database
+                    int currentAvailableQuantity = quantity;
+                    currentAvailableQuantity -= 1;
+
+
+                    values.put(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY, currentAvailableQuantity);
+
+                    resolver.update(CurrentUri, values, null, null);
+
+                    context.getContentResolver().notifyChange(CurrentUri, null);
+                } else {
+
+                    Toast.makeText(v.getContext(), "Error", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        if (b == true) {
-            sale = 0.2;
-            saleB.setVisibility(View.GONE);
-        }
 
-        price = price * sale;
-        //String priceS= String.valueOf(price);
         // Update the TextViews with the attributes for the current pet
         nameTextView.setText(Name);
         summaryTextView.setText(Integer.toString(quantity));

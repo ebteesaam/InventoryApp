@@ -32,11 +32,8 @@ import com.example.android.inventoryapp.data.InventoryContract.Entry;
  */
 
 public class AddProduct extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int EXISTING_PET_LOADER = 0;
-    public static int quantityl;
     public EditText mNameEditText;
     public int price;
-    public String image;
     private Uri mCurrentInventoryUri;
     private EditText mPriceEditText;
     private EditText mImageEditText, mSupplierName, mSupplierEmail, mSupplierNumber;
@@ -94,11 +91,15 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
         if (priceString == null) {
             priceString = "0";
         }
-
-        // and check if all the fields in the editor are blank
-        if (mCurrentInventoryUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(image) && TextUtils.isEmpty(suppliername) &&
-                TextUtils.isEmpty(supplierEmail) && TextUtils.isEmpty(supplierphone) && mquantity == Integer.parseInt(quantityString) && mprice == Integer.parseInt(priceString)) {
+        if (quantityString == "1") {
+            quantityString = "0";
+        }
+        //and check if all the fields in the editor are blank
+        if (mCurrentInventoryUri == null ||
+                TextUtils.isEmpty(nameString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(image) || TextUtils.isEmpty(suppliername) ||
+                TextUtils.isEmpty(supplierEmail) || TextUtils.isEmpty(supplierphone) || mquantity == Integer.parseInt(quantityString)
+                || mprice == Integer.parseInt(priceString)) {
+            Toast.makeText(this, "Enter all information please, Don't leave space please, try again", Toast.LENGTH_LONG).show();
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
