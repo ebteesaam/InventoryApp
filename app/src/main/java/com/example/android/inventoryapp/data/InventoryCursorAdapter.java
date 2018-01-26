@@ -30,6 +30,7 @@ import com.example.android.inventoryapp.R;
 
 public class InventoryCursorAdapter extends CursorAdapter {
     EditorActivity editorActivity;
+    long id;
     private double price;
 
     public InventoryCursorAdapter(Context context, Cursor c) {
@@ -75,6 +76,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_QUANTITY);
         int priceColumnIndex = cursor.getColumnIndex(InventoryContract.Entry.COLUMN_INVENTORY_PRICE);
         editorActivity = new EditorActivity();
+        id = cursor.getLong(cursor.getColumnIndex(InventoryContract.Entry._ID));
         // Read the pet attributes from the Cursor for the current pet
         String Name = cursor.getString(nameColumnIndex);
         final int quantity = cursor.getInt(quantityColumnIndex);
@@ -95,8 +97,9 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
                 if (quantity > 0) {
 
+
                     // Create a new uri for this product ( ListItem)
-                    Uri CurrentUri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, CatalogActivity.lo);
+                    Uri CurrentUri = ContentUris.withAppendedId(InventoryContract.Entry.CONTENT_URI, id);
 
                     // Present a new variable to send the reduced quantity to database
                     int currentAvailableQuantity = quantity;

@@ -95,8 +95,7 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
             quantityString = "0";
         }
         //and check if all the fields in the editor are blank
-        if (mCurrentInventoryUri == null ||
-                TextUtils.isEmpty(nameString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(image) || TextUtils.isEmpty(suppliername) ||
+        if (TextUtils.isEmpty(nameString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(image) || TextUtils.isEmpty(suppliername) ||
                 TextUtils.isEmpty(supplierEmail) || TextUtils.isEmpty(supplierphone) || mquantity == Integer.parseInt(quantityString)
                 || mprice == Integer.parseInt(priceString)) {
             Toast.makeText(this, "Enter all information please, Don't leave space please, try again", Toast.LENGTH_LONG).show();
@@ -193,6 +192,7 @@ public class AddProduct extends AppCompatActivity implements LoaderManager.Loade
                 // Do nothing for now
                 saveInventory();
                 finish();
+
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
